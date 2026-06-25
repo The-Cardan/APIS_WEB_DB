@@ -24,7 +24,17 @@ namespace APIS_WEB_DB.Controllers
             return await _context.Libros.ToListAsync();
         }
 
-       
+      //Optener un libro por su ID
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Libro>> GetLibro(int id)
+        {
+            var libro = await _context.Libros.FindAsync(id);
+            if (libro == null)
+            {
+                return NotFound();
+            }
+            return libro;
+        }
 
     }
 }
