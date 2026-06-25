@@ -36,5 +36,20 @@ namespace APIS_WEB_DB.Controllers
             return libro;
         }
 
+
+        //Crear un nuevo libro-Post
+        [HttpPost]
+        public async Task<ActionResult<Libro>> PostLibro(Libro libro)
+        {
+            _context.Libros.Add(libro);
+
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction(
+                nameof(GetLibro),
+                new { id = libro.Id },
+                libro);
+        }
+
     }
 }
