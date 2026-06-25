@@ -74,5 +74,23 @@ namespace APIS_WEB_DB.Controllers
             return NoContent();
         }
 
+        //Eliminar un libro existente-Delete
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteLibro(int id)
+        {
+            var libro = await _context.Libros.FindAsync(id);
+
+            if (libro == null)
+            {
+                return NotFound();
+            }
+
+            _context.Libros.Remove(libro);
+
+            await _context.SaveChangesAsync();
+
+            return NoContent();
+        }
+
     }
 }
