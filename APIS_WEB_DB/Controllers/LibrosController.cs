@@ -51,5 +51,28 @@ namespace APIS_WEB_DB.Controllers
                 libro);
         }
 
+        //Actualizar un libro existente-Put
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutLibro(int id, Libro libro)
+        {
+            if (id != libro.Id)
+            {
+                return BadRequest();
+            }
+
+            var existe = await _context.Libros.AnyAsync(x => x.Id == id);
+
+            if (!existe)
+            {
+                return NotFound();
+            }
+
+            _context.Entry(libro).State = EntityState.Modified;
+
+            await _context.SaveChangesAsync();
+
+            return NoContent();
+        }
+
     }
 }
