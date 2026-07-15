@@ -11,5 +11,6 @@ namespace APIS_WEB_DB.Data
         }
 
         public DbSet<Libro> Libros { get; set; }
+        public DbSet<Autor> Autores { get; set; }
     }
 }
