@@ -16,5 +16,7 @@ namespace APIS_WEB_DB.Models
 
         [Range(1500, 2100)]
         public int AnioNacimiento { get; set; }
+        public ICollection<Libro> Libros { get; set; } = new List<Libro>();
+
     }
 }
