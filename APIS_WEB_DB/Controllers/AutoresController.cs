@@ -15,5 +15,12 @@ namespace APIS_WEB_DB.Controllers
         {
             _context = context;
         }
+
+        // Obtener todos los autores
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Autor>>> GetAutores()
+        {
+            return await _context.Autores.ToListAsync();
+        }
     }
 }
