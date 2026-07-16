@@ -27,5 +27,7 @@ namespace APIS_WEB_DB.Models
 
         [Range(1, int.MaxValue)]
         public int AutorId { get; set; }
+
+        public Autor? Autor { get; set; }
     }
 }
