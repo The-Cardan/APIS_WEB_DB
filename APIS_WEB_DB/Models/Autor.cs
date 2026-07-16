@@ -8,11 +8,11 @@ namespace APIS_WEB_DB.Models
 
         [Required]
         [StringLength(100, MinimumLength = 3)]
-        public string Nombre { get; set; }
+        public string Nombre { get; set; } = string.Empty;
 
         [Required]
         [StringLength(50)]
-        public string Nacionalidad { get; set; }
+        public string Nacionalidad { get; set; } = string.Empty;
 
         [Range(1500, 2100)]
         public int AnioNacimiento { get; set; }
