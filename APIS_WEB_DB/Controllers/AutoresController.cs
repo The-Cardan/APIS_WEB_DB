@@ -22,5 +22,19 @@ namespace APIS_WEB_DB.Controllers
         {
             return await _context.Autores.ToListAsync();
         }
+
+        // Obtener un autor por su ID
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Autor>> GetAutor(int id)
+        {
+            var autor = await _context.Autores.FindAsync(id);
+
+            if (autor == null)
+            {
+                return NotFound();
+            }
+
+            return autor;
+        }
     }
 }
