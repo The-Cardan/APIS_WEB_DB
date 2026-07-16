@@ -73,5 +73,24 @@ namespace APIS_WEB_DB.Controllers
 
             return NoContent();
         }
+
+
+        // Eliminar un autor existente
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteAutor(int id)
+        {
+            var autor = await _context.Autores.FindAsync(id);
+
+            if (autor == null)
+            {
+                return NotFound();
+            }
+
+            _context.Autores.Remove(autor);
+
+            await _context.SaveChangesAsync();
+
+            return NoContent();
+        }
     }
 }
