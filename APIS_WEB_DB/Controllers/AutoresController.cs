@@ -36,5 +36,42 @@ namespace APIS_WEB_DB.Controllers
 
             return autor;
         }
+
+        // Crear un nuevo autor
+        [HttpPost]
+        public async Task<ActionResult<Autor>> PostAutor(Autor autor)
+        {
+            _context.Autores.Add(autor);
+
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction(
+                nameof(GetAutor),
+                new { id = autor.Id },
+                autor);
+        }
+
+        // Actualizar un autor existente
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutAutor(int id, Autor autor)
+        {
+            if (id != autor.Id)
+            {
+                return BadRequest();
+            }
+
+            var existe = await _context.Autores.AnyAsync(x => x.Id == id);
+
+            if (!existe)
+            {
+                return NotFound();
+            }
+
+            _context.Entry(autor).State = EntityState.Modified;
+
+            await _context.SaveChangesAsync();
+
+            return NoContent();
+        }
     }
 }
