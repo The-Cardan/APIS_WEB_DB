@@ -149,21 +149,7 @@ namespace APIS_WEB_DB.Controllers
             return NoContent();
         }
 
-        // Obtener todos los libros de un autor
-        [HttpGet("{id}/libros")]
-        public async Task<ActionResult<IEnumerable<Libro>>> GetLibrosPorAutor(int id)
-        {
-            var autor = await _context.Autores
-                .Include(a => a.Libros)
-                .FirstOrDefaultAsync(a => a.Id == id);
-
-            if (autor == null)
-            {
-                return NotFound();
-            }
-
-            return Ok(autor.Libros);
-        }
+      
 
     }
 }

@@ -80,6 +80,27 @@ namespace APIS_WEB_DB.Controllers
             return autor;
         }
 
+        // Obtener los libros de un autor específico
+        [HttpGet("{id}/libros")]
+        public async Task<ActionResult<IEnumerable<Libro>>> GetLibrosPorAutor(int id)
+        {
+            // Verificar si el autor existe
+            var autor = await _context.Autores.FindAsync(id);
+
+            if (autor == null)
+            {
+                return NotFound();
+            }
+
+            // Obtener los libros del autor
+            var libros = await _context.Libros
+                .Where(l => l.AutorId == id)
+                .ToListAsync();
+
+            return Ok(libros);
+        }
+
+
         // Crear un nuevo autor
         [HttpPost]
         public async Task<ActionResult<Autor>> PostAutor(Autor autor)

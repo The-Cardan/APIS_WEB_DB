@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace APIS_WEB_DB.Models
 {
@@ -8,14 +9,14 @@ namespace APIS_WEB_DB.Models
 
         [Required]
         [StringLength(200, MinimumLength = 1)]
-        public string Titulo { get; set; }
+        public string Titulo { get; set; } = string.Empty;
 
         [Range(1450, 2100)]
         public int AnioPublicacion { get; set; }
 
         [Required]
         [StringLength(50)]
-        public string Genero { get; set; }
+        public string Genero { get; set; } = string.Empty;
 
         [Range(1, int.MaxValue)]
         public int NumeroPaginas { get; set; }
@@ -28,6 +29,7 @@ namespace APIS_WEB_DB.Models
         [Range(1, int.MaxValue)]
         public int AutorId { get; set; }
 
+        [JsonIgnore]
         public Autor? Autor { get; set; }
     }
 }
