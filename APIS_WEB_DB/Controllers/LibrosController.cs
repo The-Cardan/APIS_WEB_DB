@@ -1,12 +1,16 @@
-﻿using APIS_WEB_DB.Data;
+﻿
+using APIS_WEB_DB.Data;
 using APIS_WEB_DB.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using APIS_WEB_DB.Security;
 
 namespace APIS_WEB_DB.Controllers
 {
     [Route("api/libros")]
     [ApiController]
+
+    [ApiKey]
     public class LibrosController : ControllerBase
     {
         private readonly BibliotecaContext _context;
