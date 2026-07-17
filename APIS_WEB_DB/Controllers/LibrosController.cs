@@ -24,7 +24,60 @@ namespace APIS_WEB_DB.Controllers
             return await _context.Libros.ToListAsync();
         }
 
-      //Optener un libro por su ID
+        // Obtener libros paginados con búsqueda y ordenamiento
+        [HttpGet("paginado")]
+        public async Task<ActionResult<IEnumerable<Libro>>> GetLibrosPaginados(
+            int pagina = 1,
+            int tamanoPagina = 10,
+            string? buscar = null,
+            string? ordenarPor = "titulo",
+            string? direccion = "asc")
+        {
+            var consulta = _context.Libros.AsQueryable();
+
+            // Buscar por título
+            if (!string.IsNullOrWhiteSpace(buscar))
+            {
+                consulta = consulta.Where(l => l.Titulo.Contains(buscar));
+            }
+
+            // Ordenamiento
+            switch (ordenarPor?.ToLower())
+            {
+                case "precio":
+                    consulta = direccion == "desc"
+                        ? consulta.OrderByDescending(l => l.Precio)
+                        : consulta.OrderBy(l => l.Precio);
+                    break;
+
+                case "aniopublicacion":
+                    consulta = direccion == "desc"
+                        ? consulta.OrderByDescending(l => l.AnioPublicacion)
+                        : consulta.OrderBy(l => l.AnioPublicacion);
+                    break;
+
+                case "numeropaginas":
+                    consulta = direccion == "desc"
+                        ? consulta.OrderByDescending(l => l.NumeroPaginas)
+                        : consulta.OrderBy(l => l.NumeroPaginas);
+                    break;
+
+                default:
+                    consulta = direccion == "desc"
+                        ? consulta.OrderByDescending(l => l.Titulo)
+                        : consulta.OrderBy(l => l.Titulo);
+                    break;
+            }
+
+            var libros = await consulta
+                .Skip((pagina - 1) * tamanoPagina)
+                .Take(tamanoPagina)
+                .ToListAsync();
+
+            return Ok(libros);
+        }
+
+        //Optener un libro por su ID
         [HttpGet("{id}")]
         public async Task<ActionResult<Libro>> GetLibro(int id)
         {
