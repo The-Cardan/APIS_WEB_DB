@@ -23,6 +23,47 @@ namespace APIS_WEB_DB.Controllers
             return await _context.Autores.ToListAsync();
         }
 
+        // Obtener autores paginados con búsqueda y ordenamiento
+        [HttpGet("paginado")]
+        public async Task<ActionResult<IEnumerable<Autor>>> GetAutoresPaginados(
+            int pagina = 1,
+            int tamanoPagina = 10,
+            string? buscar = null,
+            string? ordenarPor = "nombre",
+            string? direccion = "asc")
+        {
+            var consulta = _context.Autores.AsQueryable();
+
+            // Buscar por nombre
+            if (!string.IsNullOrWhiteSpace(buscar))
+            {
+                consulta = consulta.Where(a => a.Nombre.Contains(buscar));
+            }
+
+            // Ordenamiento
+            switch (ordenarPor?.ToLower())
+            {
+                case "anionacimiento":
+                    consulta = direccion == "desc"
+                        ? consulta.OrderByDescending(a => a.AnioNacimiento)
+                        : consulta.OrderBy(a => a.AnioNacimiento);
+                    break;
+
+                default:
+                    consulta = direccion == "desc"
+                        ? consulta.OrderByDescending(a => a.Nombre)
+                        : consulta.OrderBy(a => a.Nombre);
+                    break;
+            }
+
+            var autores = await consulta
+                .Skip((pagina - 1) * tamanoPagina)
+                .Take(tamanoPagina)
+                .ToListAsync();
+
+            return Ok(autores);
+        }
+
         // Obtener un autor por su ID
         [HttpGet("{id}")]
         public async Task<ActionResult<Autor>> GetAutor(int id)
